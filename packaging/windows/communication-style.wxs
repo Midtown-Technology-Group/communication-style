@@ -1,0 +1,41 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="Communication Style"
+    Manufacturer="Midtown Technology Group LLC"
+    Version="$(var.Version)"
+    UpgradeCode="{9415D75C-910A-4743-8CBD-A5510EC7FC19}"
+    InstallerVersion="500"
+    Scope="perMachine">
+
+    <SummaryInformation Description="Communication Style installer" Manufacturer="Midtown Technology Group LLC" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Communication Style is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLROOT" Name="Midtown Technology Group">
+        <Directory Id="INSTALLFOLDER" Name="Communication Style" />
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="Communication Style" Level="1">
+      <ComponentGroupRef Id="CommunicationStyleComponents" />
+    </Feature>
+
+    <ComponentGroup Id="CommunicationStyleComponents" Directory="INSTALLFOLDER">
+      <Component Id="CommunicationStyleExecutableComponent" Guid="*">
+        <File Id="CommunicationStyleExecutable" Source="$(var.BinDir)\communication-style.exe" KeyPath="yes" />
+      </Component>
+      <Component Id="PathComponent" Guid="{C04DBBEE-0309-474E-B925-4128CBF4FD2A}">
+        <CreateFolder />
+        <Environment
+          Id="CommunicationStylePathEntry"
+          Action="set"
+          Name="PATH"
+          Part="last"
+          Permanent="no"
+          System="yes"
+          Value="[INSTALLFOLDER]" />
+      </Component>
+    </ComponentGroup>
+  </Package>
+</Wix>
