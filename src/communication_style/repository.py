@@ -91,7 +91,7 @@ class CommunicationRepository:
                 messages = self._iter_values(
                     f"/me/chats/{chat_id}/messages",
                     {"$top": 50 if remaining is None else min(remaining, 50)},
-                    limit=remaining,
+                    # The quota counts authored samples, not raw messages.
                     label="chat messages",
                 )
                 for raw in messages:
@@ -113,6 +113,8 @@ class CommunicationRepository:
                                 text=text,
                             )
                         )
+                        if message_limit is not None and len(samples) >= message_limit:
+                            break
             except Exception as exc:
                 if self.progress:
                     self.progress(f"skipped chat {chat_id}", 0, str(exc))

@@ -147,7 +147,10 @@ def filter_by_participants(
         sample
         for sample in samples
         if participant_matches(sample.participants, aliases)
-        or participant_matches([sample.subject or ""], aliases)
+        or (
+            sample.source == "teams-chat"
+            and participant_matches([sample.subject or ""], aliases)
+        )
     ]
 
 
