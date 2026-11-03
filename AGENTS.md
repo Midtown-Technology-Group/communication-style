@@ -15,3 +15,12 @@ Keep collection scoped to messages authored by the signed-in user. Walk `/me/cha
 Corpus and generated guides default under `%USERPROFILE%/.codex/communication-style`; keep message text, identity metadata, and auth material out of Git and diagnostic output. Use fixtures or temporary output directories for development, never a colleague's corpus.
 
 Historical chat-member lookups can fail. Preserve the default focus behavior using sent recipients and chat/meeting titles; member probing is explicit. Source tests do not prove live consent, mailbox access, corpus completeness, or style accuracy. Document those limits in operator handoffs; this is a reporting requirement, not a claim that generated profiles already display them. Adding limits to generated output is a separate behavior change with generator tests. Windows MSI releases and Graph collection are distinct operations from local verification.
+
+## Secret gate before publication
+
+Before every push and PR creation/update, commit the complete candidate and run
+`python3 scripts/secret_gate.py` (native Windows: `python`). Require exit 0;
+missing tooling/authentication, scan errors and skipped scans block publication.
+Then run the existing repository gates. Repeat after changing outgoing commits.
+See [secret scanning](SECRET-SCANNING.md) for base selection, new branches,
+pre-push input and prerequisites. Preserve GitGuardian App, CI and Gitleaks checks.
